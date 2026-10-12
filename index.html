@@ -2,56 +2,152 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Signal Podcasts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Signal — Daily Tech Podcast</title>
+<meta name="description" content="The Signal: a daily tech podcast hosted by Marcus & Devon.">
 <style>
-  :root { --bg:#0e0f13; --card:#17181e; --text:#f2f3f5; --muted:#9aa0ab; --accent:#6c8cff; }
-  * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:var(--bg); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; line-height:1.55; }
-  header { padding:3rem 1.25rem 1.5rem; text-align:center; }
-  header h1 { font-size:2.4rem; letter-spacing:-.02em; }
-  header p { color:var(--muted); margin-top:.4rem; }
-  .player { position:sticky; top:0; z-index:10; background:#14151b; border-bottom:1px solid #26272e; padding:.9rem 1.25rem; }
-  .player-inner { max-width:860px; margin:0 auto; }
-  .player .now { font-size:.85rem; color:var(--muted); margin-bottom:.4rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .player audio { width:100%; }
-  main { max-width:860px; margin:0 auto; padding:1.5rem 1.25rem 4rem; }
-  .chips { display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.75rem; }
-  .chip { background:var(--card); color:var(--text); border:1px solid #2a2b33; border-radius:999px; padding:.4rem .9rem; cursor:pointer; font-size:.85rem; }
-  .chip.active { background:var(--accent); border-color:var(--accent); color:#fff; }
-  .ep-card { background:var(--card); border:1px solid #23242b; border-radius:14px; padding:1.25rem; margin-bottom:1rem; }
-  .ep-card h3 { font-size:1.15rem; margin:.35rem 0 .5rem; }
-  .ep-card p { color:var(--muted); font-size:.92rem; }
-  .ep-meta { font-size:.8rem; color:var(--muted); }
-  .dot { margin:0 .4rem; }
-  .tags { margin:.7rem 0; }
-  .tag { display:inline-block; background:#22232b; color:var(--accent); font-size:.75rem; border-radius:6px; padding:.15rem .55rem; margin-right:.4rem; }
-  .ep-actions { display:flex; gap:.6rem; margin-top:.4rem; }
-  .play-btn { background:var(--accent); color:#fff; border:none; border-radius:8px; padding:.55rem 1.1rem; font-size:.9rem; cursor:pointer; }
-  .dl-btn { border:1px solid #2a2b33; color:var(--text); border-radius:8px; padding:.55rem 1.1rem; font-size:.9rem; text-decoration:none; }
-  .topic-section { margin-top:2.5rem; }
-  .topic-section h2 { font-size:1.3rem; margin-bottom:.7rem; border-bottom:1px solid #23242b; padding-bottom:.4rem; }
-  .topic-section ul { list-style:none; }
-  .topic-section li { display:flex; justify-content:space-between; gap:1rem; padding:.55rem 0; border-bottom:1px solid #1c1d23; font-size:.93rem; }
-  .topic-section li a { color:var(--text); text-decoration:none; }
-  .topic-section li a:hover { color:var(--accent); }
-  .topic-section li span { color:var(--muted); font-size:.8rem; white-space:nowrap; }
-  footer { text-align:center; color:var(--muted); font-size:.8rem; padding:2rem 1rem; }
+  :root {
+    --bg:#0b0d12; --surface:#141821; --surface2:#1b2130; --text:#f4f6fa;
+    --muted:#9aa3b5; --accent:#22d3ee; --border:#232a3a;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  body {
+    background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.5; padding-bottom:120px;
+  }
+  .wrap { max-width:720px; margin:0 auto; padding:0 18px; }
+
+  .appbar {
+    position:sticky; top:0; z-index:20;
+    background:rgba(11,13,18,.82); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--border);
+  }
+  .appbar .wrap { display:flex; align-items:center; gap:12px; padding:12px 18px; }
+  .appbar img.logo { width:38px; height:38px; border-radius:10px; }
+  .appbar .brand b { display:block; font-size:1.02rem; letter-spacing:-.01em; }
+  .appbar .brand span { font-size:.76rem; color:var(--muted); }
+  .search { margin-left:auto; position:relative; }
+  .search input {
+    background:var(--surface); border:1px solid var(--border); color:var(--text);
+    border-radius:999px; padding:9px 14px 9px 36px; font-size:.88rem; width:170px;
+    outline:none;
+  }
+  .search input:focus { border-color:var(--accent); }
+  .search svg { position:absolute; left:12px; top:50%; transform:translateY(-50%); opacity:.55; }
+
+  .hero {
+    position:relative; margin:18px 0 8px; border-radius:22px; overflow:hidden;
+    border:1px solid var(--border); background:var(--surface);
+  }
+  .hero-bg {
+    position:absolute; inset:0; background-size:cover; background-position:center;
+    filter:blur(38px) brightness(.5); transform:scale(1.25);
+  }
+  .hero-inner { position:relative; display:flex; gap:16px; padding:20px; align-items:center; }
+  .hero img.art { width:128px; height:128px; border-radius:18px; box-shadow:0 12px 32px rgba(0,0,0,.5); flex-shrink:0; }
+  .hero .kicker {
+    display:inline-block; font-size:.68rem; font-weight:700; letter-spacing:.12em;
+    color:#062a30; background:var(--accent); border-radius:6px; padding:3px 8px; margin-bottom:8px;
+  }
+  .hero h1 { font-size:1.28rem; letter-spacing:-.015em; line-height:1.3; margin-bottom:6px; }
+  .hero .meta { font-size:.8rem; color:var(--muted); margin-bottom:12px; }
+  .btn-play {
+    display:inline-flex; align-items:center; gap:8px; background:var(--accent); color:#062a30;
+    border:none; border-radius:999px; padding:11px 22px; font-size:.95rem; font-weight:700; cursor:pointer;
+  }
+  .btn-play:active { transform:scale(.97); }
+
+  .chips { display:flex; gap:8px; overflow-x:auto; padding:14px 0 4px; scrollbar-width:none; }
+  .chips::-webkit-scrollbar { display:none; }
+  .chip {
+    flex-shrink:0; background:var(--surface); color:var(--text); border:1px solid var(--border);
+    border-radius:999px; padding:8px 15px; font-size:.83rem; cursor:pointer; white-space:nowrap;
+  }
+  .chip.active { background:var(--accent); border-color:var(--accent); color:#062a30; font-weight:700; }
+
+  .section-title { font-size:1.05rem; font-weight:700; margin:20px 0 6px; letter-spacing:-.01em; }
+  .row {
+    display:flex; gap:14px; align-items:center; padding:13px 6px;
+    border-bottom:1px solid var(--border); cursor:pointer;
+  }
+  .row:active { background:var(--surface); border-radius:12px; }
+  .row .thumb { width:64px; height:64px; border-radius:12px; flex-shrink:0; background:var(--surface2); }
+  .row-main { flex:1; min-width:0; }
+  .row-title { font-size:.95rem; font-weight:600; letter-spacing:-.005em; }
+  .row.playing .row-title { color:var(--accent); }
+  .row-meta { font-size:.75rem; color:var(--muted); margin:2px 0 4px; }
+  .row-desc {
+    font-size:.8rem; color:var(--muted); display:-webkit-box; -webkit-line-clamp:2;
+    -webkit-box-orient:vertical; overflow:hidden;
+  }
+  .row-play {
+    width:42px; height:42px; border-radius:50%; border:1px solid var(--border);
+    background:var(--surface2); color:var(--text); font-size:.85rem; cursor:pointer; flex-shrink:0;
+  }
+  .row.playing .row-play { background:var(--accent); border-color:var(--accent); color:#062a30; }
+  .empty { text-align:center; color:var(--muted); padding:40px 0; font-size:.9rem; }
+
+  footer { text-align:center; color:var(--muted); font-size:.76rem; padding:26px 18px 8px; }
+
+  #miniplayer {
+    position:fixed; left:0; right:0; bottom:0; z-index:30;
+    background:rgba(20,24,33,.94); backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+    border-top:1px solid var(--border);
+    transform:translateY(110%); transition:transform .28s ease;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+  #miniplayer.show { transform:translateY(0); }
+  .mp-progress { height:3px; background:#2a3247; cursor:pointer; }
+  .mp-progress .fill { height:100%; width:0%; background:var(--accent); }
+  .mp-body { display:flex; align-items:center; gap:12px; padding:10px 16px 12px; max-width:720px; margin:0 auto; }
+  .mp-body img { width:48px; height:48px; border-radius:10px; flex-shrink:0; }
+  .mp-info { flex:1; min-width:0; }
+  .mp-title { font-size:.85rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .mp-time { font-size:.72rem; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .mp-btn {
+    width:44px; height:44px; border-radius:50%; border:none; cursor:pointer; flex-shrink:0;
+    background:var(--surface2); color:var(--text); font-size:.95rem;
+  }
+  .mp-btn.main { background:var(--accent); color:#062a30; width:52px; height:52px; font-size:1.05rem; }
   .hidden { display:none !important; }
+  @media (max-width:520px) {
+    .search input { width:120px; }
+    .hero img.art { width:104px; height:104px; }
+    .hero h1 { font-size:1.1rem; }
+  }
 </style>
 </head>
 <body>
-<header>
-  <h1>Signal Podcasts</h1>
-  <p>A daily tech podcast hosted by Marcus &amp; Devon</p>
-</header>
-<div class="player">
-  <div class="player-inner">
-    <div class="now">Now playing: <span id="now-title">October 11: SpaceX Wants to Be Your Phone Company</span></div>
-    <audio id="player" controls preload="metadata" src="audio/october-11-spacex-wants-to-be-your-phone-company-2026-10-12.mp3"></audio>
+
+<div class="appbar">
+  <div class="wrap">
+    <img class="logo" src="covers/cover.webp" alt="The Signal logo">
+    <div class="brand"><b>The Signal</b><span>Daily tech podcast · Marcus &amp; Devon</span></div>
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="q" type="search" placeholder="Search episodes" aria-label="Search episodes">
+    </div>
   </div>
 </div>
-<main>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="hero-bg" style="background-image:url('covers/cover.webp')"></div>
+    <div class="hero-inner">
+      <img class="art" src="covers/cover.webp" alt="Episode artwork">
+      <div>
+        <span class="kicker">LATEST EPISODE</span>
+        <h1>October 11: SpaceX Wants to Be Your Phone Company</h1>
+        <div class="meta">Oct 12, 2026 · 35 min</div>
+        <button class="btn-play" id="hero-play"
+          data-audio="audio/october-11-spacex-wants-to-be-your-phone-company-2026-10-12.mp3" data-title="October 11: SpaceX Wants to Be Your Phone Company">
+          ▶&nbsp; Play episode
+        </button>
+      </div>
+    </div>
+  </div>
   <div class="chips" id="chips">
     <button class="chip active" data-topic="all">All</button>
     <button class="chip" data-topic="AI">AI</button>
@@ -61,269 +157,327 @@
 <button class="chip" data-topic="Smart Home">Smart Home</button>
 <button class="chip" data-topic="Smartphones">Smartphones</button>
   </div>
+  <div class="section-title">All episodes</div>
   <div id="episodes">
-        <article class="ep-card" data-topics="Apple,Smartphones,Gaming,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 12, 2026</span><span class="dot">·</span><span>35 min</span></div>
-          <h3>October 11: SpaceX Wants to Be Your Phone Company</h3>
-          <p>SpaceX buys low-band spectrum and sends telecom stocks tumbling, Apple swaps dying iPhone 18 Pro Max units on AT&amp;T, Fortnite lets you buy exact V-Bucks as the EU cracks down, and the Welcome home event is two days out.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">Smartphones</span> <span class="tag">Gaming</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/october-11-spacex-wants-to-be-your-phone-company-2026-10-12.mp3" data-title="October 11: SpaceX Wants to Be Your Phone Company">▶ Play</button>
-            <a class="dl-btn" href="audio/october-11-spacex-wants-to-be-your-phone-company-2026-10-12.mp3" download>Download</a>
+        <div class="row" data-topics="Apple,Smartphones,Gaming,Apps &amp; Dev" data-search="october 11: spacex wants to be your phone company spacex buys low-band spectrum and sends telecom stocks tumbling, apple swaps dying iphone 18 pro max units on at&amp;t, fortnite lets you buy exact v-bucks as the eu cracks down, and the welcome home event is two days out."
+             data-audio="audio/october-11-spacex-wants-to-be-your-phone-company-2026-10-12.mp3" data-title="October 11: SpaceX Wants to Be Your Phone Company">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">October 11: SpaceX Wants to Be Your Phone Company</div>
+            <div class="row-meta">Oct 12, 2026 · 35 min</div>
+            <div class="row-desc">SpaceX buys low-band spectrum and sends telecom stocks tumbling, Apple swaps dying iPhone 18 Pro Max units on AT&amp;T, Fortnite lets you buy exact V-Bucks as the EU cracks down, and the Welcome home event is two days out.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,AI,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 11, 2026</span><span class="dot">·</span><span>34 min</span></div>
-          <h3>October 10: GTA VI Held Hostage by a Meme Coin</h3>
-          <p>A leaker threatens to drop the full GTA VI story if its meme coin hits thirty million dollars, Apple is three days from the Welcome home event, Google ships Gemini 4 Argon to almost nobody, and the big AI labs prep for doomsday together.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">AI</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/october-10-gta-vi-held-hostage-by-a-meme-coin-2026-10-11.mp3" data-title="October 10: GTA VI Held Hostage by a Meme Coin">▶ Play</button>
-            <a class="dl-btn" href="audio/october-10-gta-vi-held-hostage-by-a-meme-coin-2026-10-11.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,AI,Apps &amp; Dev" data-search="october 10: gta vi held hostage by a meme coin a leaker threatens to drop the full gta vi story if its meme coin hits thirty million dollars, apple is three days from the welcome home event, google ships gemini 4 argon to almost nobody, and the big ai labs prep for doomsday together."
+             data-audio="audio/october-10-gta-vi-held-hostage-by-a-meme-coin-2026-10-11.mp3" data-title="October 10: GTA VI Held Hostage by a Meme Coin">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">October 10: GTA VI Held Hostage by a Meme Coin</div>
+            <div class="row-meta">Oct 11, 2026 · 34 min</div>
+            <div class="row-desc">A leaker threatens to drop the full GTA VI story if its meme coin hits thirty million dollars, Apple is three days from the Welcome home event, Google ships Gemini 4 Argon to almost nobody, and the big AI labs prep for doomsday together.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,AI,Smartphones,Gaming,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 10, 2026</span><span class="dot">·</span><span>33 min</span></div>
-          <h3>October 9: Hello, Your Name Here</h3>
-          <p>Apple Stores will greet iPhone Duo buyers by name on the hello screen, Samsung cuts its 2026 forecast as Apple eyes the smartphone crown, Claude Haiku 5.5 gets 90 percent cheaper, and Fortnitemares rolls into week two.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">AI</span> <span class="tag">Smartphones</span> <span class="tag">Gaming</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/october-9-hello-your-name-here-2026-10-10.mp3" data-title="October 9: Hello, Your Name Here">▶ Play</button>
-            <a class="dl-btn" href="audio/october-9-hello-your-name-here-2026-10-10.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,AI,Smartphones,Gaming,Apps &amp; Dev" data-search="october 9: hello, your name here apple stores will greet iphone duo buyers by name on the hello screen, samsung cuts its 2026 forecast as apple eyes the smartphone crown, claude haiku 5.5 gets 90 percent cheaper, and fortnitemares rolls into week two."
+             data-audio="audio/october-9-hello-your-name-here-2026-10-10.mp3" data-title="October 9: Hello, Your Name Here">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">October 9: Hello, Your Name Here</div>
+            <div class="row-meta">Oct 10, 2026 · 33 min</div>
+            <div class="row-desc">Apple Stores will greet iPhone Duo buyers by name on the hello screen, Samsung cuts its 2026 forecast as Apple eyes the smartphone crown, Claude Haiku 5.5 gets 90 percent cheaper, and Fortnitemares rolls into week two.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,AI,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 09, 2026</span><span class="dot">·</span><span>31 min</span></div>
-          <h3>October 8: Two Octobers, One Chatbot</h3>
-          <p>Apple&#x27;s &#x27;Welcome home&#x27; invites are out for October 13 while Bloomberg dates the touchscreen Mac for October 27, GPT-6 turns ChatGPT answers into interactive tools, and Microsoft puts AI agents in a Windows sandbox.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">AI</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/october-8-two-octobers-one-chatbot-2026-10-09.mp3" data-title="October 8: Two Octobers, One Chatbot">▶ Play</button>
-            <a class="dl-btn" href="audio/october-8-two-octobers-one-chatbot-2026-10-09.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,AI,Apps &amp; Dev" data-search="october 8: two octobers, one chatbot apple&#x27;s &#x27;welcome home&#x27; invites are out for october 13 while bloomberg dates the touchscreen mac for october 27, gpt-6 turns chatgpt answers into interactive tools, and microsoft puts ai agents in a windows sandbox."
+             data-audio="audio/october-8-two-octobers-one-chatbot-2026-10-09.mp3" data-title="October 8: Two Octobers, One Chatbot">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">October 8: Two Octobers, One Chatbot</div>
+            <div class="row-meta">Oct 09, 2026 · 31 min</div>
+            <div class="row-desc">Apple&#x27;s &#x27;Welcome home&#x27; invites are out for October 13 while Bloomberg dates the touchscreen Mac for October 27, GPT-6 turns ChatGPT answers into interactive tools, and Microsoft puts AI agents in a Windows sandbox.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,AI,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 08, 2026</span><span class="dot">·</span><span>32 min</span></div>
-          <h3>October 7: Apple&#x27;s Double October</h3>
-          <p>Apple&#x27;s rumored two-launch October, AI bosses testifying under oath in New York, Google&#x27;s public AI lie detector, and the FTC grilling chatbots about kids.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">AI</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/october-7-apples-double-october-2026-10-08.mp3" data-title="October 7: Apple&#x27;s Double October">▶ Play</button>
-            <a class="dl-btn" href="audio/october-7-apples-double-october-2026-10-08.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,AI,Apps &amp; Dev" data-search="october 7: apple&#x27;s double october apple&#x27;s rumored two-launch october, ai bosses testifying under oath in new york, google&#x27;s public ai lie detector, and the ftc grilling chatbots about kids."
+             data-audio="audio/october-7-apples-double-october-2026-10-08.mp3" data-title="October 7: Apple&#x27;s Double October">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">October 7: Apple&#x27;s Double October</div>
+            <div class="row-meta">Oct 08, 2026 · 32 min</div>
+            <div class="row-desc">Apple&#x27;s rumored two-launch October, AI bosses testifying under oath in New York, Google&#x27;s public AI lie detector, and the FTC grilling chatbots about kids.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,AI,Gaming,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 07, 2026</span><span class="dot">·</span><span>34 min</span></div>
-          <h3>October 6: One Week to Apple&#x27;s Home Event</h3>
-          <p>Apple&#x27;s rumored October 13 home event is one week out with no invite yet, OpenAI watermarks ChatGPT in the EU, Ubisoft revives Watch Dogs, and Fortnitemares goes full spooky season.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">AI</span> <span class="tag">Gaming</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/october-6-one-week-to-apples-home-event-2026-10-07.mp3" data-title="October 6: One Week to Apple&#x27;s Home Event">▶ Play</button>
-            <a class="dl-btn" href="audio/october-6-one-week-to-apples-home-event-2026-10-07.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,AI,Gaming,Apps &amp; Dev" data-search="october 6: one week to apple&#x27;s home event apple&#x27;s rumored october 13 home event is one week out with no invite yet, openai watermarks chatgpt in the eu, ubisoft revives watch dogs, and fortnitemares goes full spooky season."
+             data-audio="audio/october-6-one-week-to-apples-home-event-2026-10-07.mp3" data-title="October 6: One Week to Apple&#x27;s Home Event">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">October 6: One Week to Apple&#x27;s Home Event</div>
+            <div class="row-meta">Oct 07, 2026 · 34 min</div>
+            <div class="row-desc">Apple&#x27;s rumored October 13 home event is one week out with no invite yet, OpenAI watermarks ChatGPT in the EU, Ubisoft revives Watch Dogs, and Fortnitemares goes full spooky season.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="AI">
-          <div class="ep-meta"><span>Oct 06, 2026</span><span class="dot">·</span><span>27 min</span></div>
-          <h3>October 5: The AI That Cheated at StarCraft</h3>
-          <p>An AI that plagiarized a StarCraft champion, the Pentagon dumping Claude, Washington&#x27;s Super Intelligence rebrand, and the 15th anniversary of Steve Jobs.</p>
-          <div class="tags"><span class="tag">AI</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/october-5-the-ai-that-cheated-at-starcraft-2026-10-06.mp3" data-title="October 5: The AI That Cheated at StarCraft">▶ Play</button>
-            <a class="dl-btn" href="audio/october-5-the-ai-that-cheated-at-starcraft-2026-10-06.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="AI" data-search="october 5: the ai that cheated at starcraft an ai that plagiarized a starcraft champion, the pentagon dumping claude, washington&#x27;s super intelligence rebrand, and the 15th anniversary of steve jobs."
+             data-audio="audio/october-5-the-ai-that-cheated-at-starcraft-2026-10-06.mp3" data-title="October 5: The AI That Cheated at StarCraft">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">October 5: The AI That Cheated at StarCraft</div>
+            <div class="row-meta">Oct 06, 2026 · 27 min</div>
+            <div class="row-desc">An AI that plagiarized a StarCraft champion, the Pentagon dumping Claude, Washington&#x27;s Super Intelligence rebrand, and the 15th anniversary of Steve Jobs.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,AI,Smartphones">
-          <div class="ep-meta"><span>Oct 05, 2026</span><span class="dot">·</span><span>29 min</span></div>
-          <h3>October 4: The Phone That Forgot How to Phone</h3>
-          <p>An iPhone that forgets how to call, a three hundred million dollar GPU smuggling bust, Sam Altman&#x27;s AI religion beef, and the final countdown to iPhone Duo week.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">AI</span> <span class="tag">Smartphones</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/october-4-the-phone-that-forgot-how-to-phone-2026-10-05.mp3" data-title="October 4: The Phone That Forgot How to Phone">▶ Play</button>
-            <a class="dl-btn" href="audio/october-4-the-phone-that-forgot-how-to-phone-2026-10-05.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,AI,Smartphones" data-search="october 4: the phone that forgot how to phone an iphone that forgets how to call, a three hundred million dollar gpu smuggling bust, sam altman&#x27;s ai religion beef, and the final countdown to iphone duo week."
+             data-audio="audio/october-4-the-phone-that-forgot-how-to-phone-2026-10-05.mp3" data-title="October 4: The Phone That Forgot How to Phone">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">October 4: The Phone That Forgot How to Phone</div>
+            <div class="row-meta">Oct 05, 2026 · 29 min</div>
+            <div class="row-desc">An iPhone that forgets how to call, a three hundred million dollar GPU smuggling bust, Sam Altman&#x27;s AI religion beef, and the final countdown to iPhone Duo week.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,AI,Smartphones,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 04, 2026</span><span class="dot">·</span><span>34 min</span></div>
-          <h3>Oct 3: Apple vs the Agents, Atlas Clocks In</h3>
-          <p>Apple locks down Mac permissions over AI agent risks, OpenAI&#x27;s Dot drives your desktop, Atlas gets a factory job, and the iPhone Duo pre-order battle plan.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">AI</span> <span class="tag">Smartphones</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/oct-3-apple-vs-the-agents-atlas-clocks-in-2026-10-04.mp3" data-title="Oct 3: Apple vs the Agents, Atlas Clocks In">▶ Play</button>
-            <a class="dl-btn" href="audio/oct-3-apple-vs-the-agents-atlas-clocks-in-2026-10-04.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,AI,Smartphones,Apps &amp; Dev" data-search="oct 3: apple vs the agents, atlas clocks in apple locks down mac permissions over ai agent risks, openai&#x27;s dot drives your desktop, atlas gets a factory job, and the iphone duo pre-order battle plan."
+             data-audio="audio/oct-3-apple-vs-the-agents-atlas-clocks-in-2026-10-04.mp3" data-title="Oct 3: Apple vs the Agents, Atlas Clocks In">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">Oct 3: Apple vs the Agents, Atlas Clocks In</div>
+            <div class="row-meta">Oct 04, 2026 · 34 min</div>
+            <div class="row-desc">Apple locks down Mac permissions over AI agent risks, OpenAI&#x27;s Dot drives your desktop, Atlas gets a factory job, and the iPhone Duo pre-order battle plan.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,AI,Smartphones,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 02, 2026</span><span class="dot">·</span><span>40 min</span></div>
-          <h3>Oct 2: After the Fold — Tri-Folds, Rollables, and the AI Phone</h3>
-          <p>Apple shipped the iPhone Duo and folding went mainstream. Marcus and Devon look at what&#x27;s next: tri-folds, rollables, phones that kill apps, robot cameras, and batteries that last three days.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">AI</span> <span class="tag">Smartphones</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/oct-2-batch-9-after-the-fold-tri-folds-rollables-and-the-ai-phone-2026-10-02.mp3" data-title="Oct 2: After the Fold — Tri-Folds, Rollables, and the AI Phone">▶ Play</button>
-            <a class="dl-btn" href="audio/oct-2-batch-9-after-the-fold-tri-folds-rollables-and-the-ai-phone-2026-10-02.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,AI,Smartphones,Apps &amp; Dev" data-search="oct 2: after the fold — tri-folds, rollables, and the ai phone apple shipped the iphone duo and folding went mainstream. marcus and devon look at what&#x27;s next: tri-folds, rollables, phones that kill apps, robot cameras, and batteries that last three days."
+             data-audio="audio/oct-2-batch-9-after-the-fold-tri-folds-rollables-and-the-ai-phone-2026-10-02.mp3" data-title="Oct 2: After the Fold — Tri-Folds, Rollables, and the AI Phone">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">Oct 2: After the Fold — Tri-Folds, Rollables, and the AI Phone</div>
+            <div class="row-meta">Oct 02, 2026 · 40 min</div>
+            <div class="row-desc">Apple shipped the iPhone Duo and folding went mainstream. Marcus and Devon look at what&#x27;s next: tri-folds, rollables, phones that kill apps, robot cameras, and batteries that last three days.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="AI">
-          <div class="ep-meta"><span>Oct 02, 2026</span><span class="dot">·</span><span>39 min</span></div>
-          <h3>Oct 2: The 725 Billion Dollar Question</h3>
-          <p>Big tech&#x27;s record AI spending spree, the OpenAI vs Anthropic funding cage match, NVIDIA&#x27;s Hugging Face buy, and a courtroom full of antitrust drama.</p>
-          <div class="tags"><span class="tag">AI</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/oct-2-batch-10-the-725-billion-dollar-question-2026-10-02.mp3" data-title="Oct 2: The 725 Billion Dollar Question">▶ Play</button>
-            <a class="dl-btn" href="audio/oct-2-batch-10-the-725-billion-dollar-question-2026-10-02.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="AI" data-search="oct 2: the 725 billion dollar question big tech&#x27;s record ai spending spree, the openai vs anthropic funding cage match, nvidia&#x27;s hugging face buy, and a courtroom full of antitrust drama."
+             data-audio="audio/oct-2-batch-10-the-725-billion-dollar-question-2026-10-02.mp3" data-title="Oct 2: The 725 Billion Dollar Question">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">Oct 2: The 725 Billion Dollar Question</div>
+            <div class="row-meta">Oct 02, 2026 · 39 min</div>
+            <div class="row-desc">Big tech&#x27;s record AI spending spree, the OpenAI vs Anthropic funding cage match, NVIDIA&#x27;s Hugging Face buy, and a courtroom full of antitrust drama.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,AI,Smart Home,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 02, 2026</span><span class="dot">·</span><span>38 min</span></div>
-          <h3>Oct 2: Apple&#x27;s Smart Home Week, Matter Grows Up, and Robot Vacuum Wars</h3>
-          <p>Marcus and Devon break down Apple&#x27;s rumored October 13 smart home trio, Matter finally delivering on its promise, three new robot vacuum flagships, and the Alexa Plus vs Gemini for Home assistant battle.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">AI</span> <span class="tag">Smart Home</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/oct-2-batch-3-apples-smart-home-week-matter-grows-up-and-robot-vacuum-wars-2026-10-02.mp3" data-title="Oct 2: Apple&#x27;s Smart Home Week, Matter Grows Up, and Robot Vacuum Wars">▶ Play</button>
-            <a class="dl-btn" href="audio/oct-2-batch-3-apples-smart-home-week-matter-grows-up-and-robot-vacuum-wars-2026-10-02.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,AI,Smart Home,Apps &amp; Dev" data-search="oct 2: apple&#x27;s smart home week, matter grows up, and robot vacuum wars marcus and devon break down apple&#x27;s rumored october 13 smart home trio, matter finally delivering on its promise, three new robot vacuum flagships, and the alexa plus vs gemini for home assistant battle."
+             data-audio="audio/oct-2-batch-3-apples-smart-home-week-matter-grows-up-and-robot-vacuum-wars-2026-10-02.mp3" data-title="Oct 2: Apple&#x27;s Smart Home Week, Matter Grows Up, and Robot Vacuum Wars">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">Oct 2: Apple&#x27;s Smart Home Week, Matter Grows Up, and Robot Vacuum Wars</div>
+            <div class="row-meta">Oct 02, 2026 · 38 min</div>
+            <div class="row-desc">Marcus and Devon break down Apple&#x27;s rumored October 13 smart home trio, Matter finally delivering on its promise, three new robot vacuum flagships, and the Alexa Plus vs Gemini for Home assistant battle.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="AI">
-          <div class="ep-meta"><span>Oct 02, 2026</span><span class="dot">·</span><span>40 min</span></div>
-          <h3>Oct 2: The Robotaxi Wars, the Ten Thousand Dollar EV, and the Battle for Your Dashboard</h3>
-          <p>Waymo hits half a million driverless rides a week as Tesla&#x27;s Cybercab answers, BYD reveals the ten thousand dollar Great Seagull, and CarPlay Ultra remains stalled while in-car AI ships.</p>
-          <div class="tags"><span class="tag">AI</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/oct-2-batch-7-the-robotaxi-wars-the-ten-thousand-dollar-ev-and-the-battle-for-your-dashboard-2026-10-02.mp3" data-title="Oct 2: The Robotaxi Wars, the Ten Thousand Dollar EV, and the Battle for Your Dashboard">▶ Play</button>
-            <a class="dl-btn" href="audio/oct-2-batch-7-the-robotaxi-wars-the-ten-thousand-dollar-ev-and-the-battle-for-your-dashboard-2026-10-02.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="AI" data-search="oct 2: the robotaxi wars, the ten thousand dollar ev, and the battle for your dashboard waymo hits half a million driverless rides a week as tesla&#x27;s cybercab answers, byd reveals the ten thousand dollar great seagull, and carplay ultra remains stalled while in-car ai ships."
+             data-audio="audio/oct-2-batch-7-the-robotaxi-wars-the-ten-thousand-dollar-ev-and-the-battle-for-your-dashboard-2026-10-02.mp3" data-title="Oct 2: The Robotaxi Wars, the Ten Thousand Dollar EV, and the Battle for Your Dashboard">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">Oct 2: The Robotaxi Wars, the Ten Thousand Dollar EV, and the Battle for Your Dashboard</div>
+            <div class="row-meta">Oct 02, 2026 · 40 min</div>
+            <div class="row-desc">Waymo hits half a million driverless rides a week as Tesla&#x27;s Cybercab answers, BYD reveals the ten thousand dollar Great Seagull, and CarPlay Ultra remains stalled while in-car AI ships.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="AI,Gaming">
-          <div class="ep-meta"><span>Oct 02, 2026</span><span class="dot">·</span><span>37 min</span></div>
-          <h3>Oct 2: The Security Tune-Up — Breaches, AI Voice Scams &amp; Passkeys</h3>
-          <p>Marcus and Devon break down September&#x27;s biggest breaches, the AI voice-cloning scam wave (and the 30-second defense), Fortnite account traps, and the privacy toolkit worth setting up this weekend.</p>
-          <div class="tags"><span class="tag">AI</span> <span class="tag">Gaming</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/oct-2-batch-8-the-security-tune-up-breaches-ai-voice-scams-passkeys-2026-10-02.mp3" data-title="Oct 2: The Security Tune-Up — Breaches, AI Voice Scams &amp; Passkeys">▶ Play</button>
-            <a class="dl-btn" href="audio/oct-2-batch-8-the-security-tune-up-breaches-ai-voice-scams-passkeys-2026-10-02.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="AI,Gaming" data-search="oct 2: the security tune-up — breaches, ai voice scams &amp; passkeys marcus and devon break down september&#x27;s biggest breaches, the ai voice-cloning scam wave (and the 30-second defense), fortnite account traps, and the privacy toolkit worth setting up this weekend."
+             data-audio="audio/oct-2-batch-8-the-security-tune-up-breaches-ai-voice-scams-passkeys-2026-10-02.mp3" data-title="Oct 2: The Security Tune-Up — Breaches, AI Voice Scams &amp; Passkeys">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">Oct 2: The Security Tune-Up — Breaches, AI Voice Scams &amp; Passkeys</div>
+            <div class="row-meta">Oct 02, 2026 · 37 min</div>
+            <div class="row-desc">Marcus and Devon break down September&#x27;s biggest breaches, the AI voice-cloning scam wave (and the 30-second defense), Fortnite account traps, and the privacy toolkit worth setting up this weekend.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Smartphones">
-          <div class="ep-meta"><span>Oct 02, 2026</span><span class="dot">·</span><span>40 min</span></div>
-          <h3>Oct 2: Starship Finally Reaches Orbit</h3>
-          <p>Starship&#x27;s first orbital flight delivers 26 Starlink V3 satellites, Starlink goes direct-to-phone worldwide, the US-China moon race comes down to months, and Rocket Lab protests Blue Origin&#x27;s $700M Mars contract.</p>
-          <div class="tags"><span class="tag">Smartphones</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/oct-2-batch-6-starship-finally-reaches-orbit-2026-10-02.mp3" data-title="Oct 2: Starship Finally Reaches Orbit">▶ Play</button>
-            <a class="dl-btn" href="audio/oct-2-batch-6-starship-finally-reaches-orbit-2026-10-02.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Smartphones" data-search="oct 2: starship finally reaches orbit starship&#x27;s first orbital flight delivers 26 starlink v3 satellites, starlink goes direct-to-phone worldwide, the us-china moon race comes down to months, and rocket lab protests blue origin&#x27;s $700m mars contract."
+             data-audio="audio/oct-2-batch-6-starship-finally-reaches-orbit-2026-10-02.mp3" data-title="Oct 2: Starship Finally Reaches Orbit">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">Oct 2: Starship Finally Reaches Orbit</div>
+            <div class="row-meta">Oct 02, 2026 · 40 min</div>
+            <div class="row-desc">Starship&#x27;s first orbital flight delivers 26 Starlink V3 satellites, Starlink goes direct-to-phone worldwide, the US-China moon race comes down to months, and Rocket Lab protests Blue Origin&#x27;s $700M Mars contract.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="AI">
-          <div class="ep-meta"><span>Oct 02, 2026</span><span class="dot">·</span><span>39 min</span></div>
-          <h3>Oct 2: The AI Model Wars</h3>
-          <p>Marcus and Devon break down September&#x27;s frontier model blitz, the API price war, Anthropic&#x27;s two trillion dollar IPO march, always-on AI agents, and Siri&#x27;s long-awaited glow-up.</p>
-          <div class="tags"><span class="tag">AI</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/oct-2-batch-5-the-ai-model-wars-2026-10-02.mp3" data-title="Oct 2: The AI Model Wars">▶ Play</button>
-            <a class="dl-btn" href="audio/oct-2-batch-5-the-ai-model-wars-2026-10-02.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="AI" data-search="oct 2: the ai model wars marcus and devon break down september&#x27;s frontier model blitz, the api price war, anthropic&#x27;s two trillion dollar ipo march, always-on ai agents, and siri&#x27;s long-awaited glow-up."
+             data-audio="audio/oct-2-batch-5-the-ai-model-wars-2026-10-02.mp3" data-title="Oct 2: The AI Model Wars">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">Oct 2: The AI Model Wars</div>
+            <div class="row-meta">Oct 02, 2026 · 39 min</div>
+            <div class="row-desc">Marcus and Devon break down September&#x27;s frontier model blitz, the API price war, Anthropic&#x27;s two trillion dollar IPO march, always-on AI agents, and Siri&#x27;s long-awaited glow-up.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Gaming">
-          <div class="ep-meta"><span>Oct 02, 2026</span><span class="dot">·</span><span>39 min</span></div>
-          <h3>Oct 2: GTA VI Countdown, the OLED Handheld Wars, and Fortnitemares</h3>
-          <p>Seven weeks to GTA VI, the ROG Xbox Ally X20 goes OLED at ,299, and Fortnitemares 2026 brings Five Nights at Freddy&#x27;s to the island.</p>
-          <div class="tags"><span class="tag">Gaming</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/oct-2-batch-2-gta-vi-countdown-the-oled-handheld-wars-and-fortnitemares-2026-10-02.mp3" data-title="Oct 2: GTA VI Countdown, the OLED Handheld Wars, and Fortnitemares">▶ Play</button>
-            <a class="dl-btn" href="audio/oct-2-batch-2-gta-vi-countdown-the-oled-handheld-wars-and-fortnitemares-2026-10-02.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Gaming" data-search="oct 2: gta vi countdown, the oled handheld wars, and fortnitemares seven weeks to gta vi, the rog xbox ally x20 goes oled at ,299, and fortnitemares 2026 brings five nights at freddy&#x27;s to the island."
+             data-audio="audio/oct-2-batch-2-gta-vi-countdown-the-oled-handheld-wars-and-fortnitemares-2026-10-02.mp3" data-title="Oct 2: GTA VI Countdown, the OLED Handheld Wars, and Fortnitemares">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">Oct 2: GTA VI Countdown, the OLED Handheld Wars, and Fortnitemares</div>
+            <div class="row-meta">Oct 02, 2026 · 39 min</div>
+            <div class="row-desc">Seven weeks to GTA VI, the ROG Xbox Ally X20 goes OLED at ,299, and Fortnitemares 2026 brings Five Nights at Freddy&#x27;s to the island.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,AI,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 02, 2026</span><span class="dot">·</span><span>39 min</span></div>
-          <h3>Oct 2: Meta&#x27;s Face-First Future — Smart Glasses, AI Pins, and the Watch Wars</h3>
-          <p>Meta&#x27;s Connect 2026 glasses blitz, the privacy paradox, Apple&#x27;s late-2027 glasses plan, and the fall smartwatch showdown.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">AI</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/oct-2-batch-1-metas-face-first-future-smart-glasses-ai-pins-and-the-watch-wars-2026-10-02.mp3" data-title="Oct 2: Meta&#x27;s Face-First Future — Smart Glasses, AI Pins, and the Watch Wars">▶ Play</button>
-            <a class="dl-btn" href="audio/oct-2-batch-1-metas-face-first-future-smart-glasses-ai-pins-and-the-watch-wars-2026-10-02.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,AI,Apps &amp; Dev" data-search="oct 2: meta&#x27;s face-first future — smart glasses, ai pins, and the watch wars meta&#x27;s connect 2026 glasses blitz, the privacy paradox, apple&#x27;s late-2027 glasses plan, and the fall smartwatch showdown."
+             data-audio="audio/oct-2-batch-1-metas-face-first-future-smart-glasses-ai-pins-and-the-watch-wars-2026-10-02.mp3" data-title="Oct 2: Meta&#x27;s Face-First Future — Smart Glasses, AI Pins, and the Watch Wars">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">Oct 2: Meta&#x27;s Face-First Future — Smart Glasses, AI Pins, and the Watch Wars</div>
+            <div class="row-meta">Oct 02, 2026 · 39 min</div>
+            <div class="row-desc">Meta&#x27;s Connect 2026 glasses blitz, the privacy paradox, Apple&#x27;s late-2027 glasses plan, and the fall smartwatch showdown.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 02, 2026</span><span class="dot">·</span><span>38 min</span></div>
-          <h3>Oct 2: The Indie iOS Playbook — App Store Fees, Subscription Economics, and Shipping Solo</h3>
-          <p>Marcus and Devon break down Apple&#x27;s new EU App Store fee terms, RevenueCat&#x27;s brutal 2026 subscription benchmarks, surviving App Review, and indie dev stories — a builder&#x27;s episode for anyone shipping apps solo.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/oct-2-batch-4-the-indie-ios-playbook-app-store-fees-subscription-economics-and-shipping-solo-2026-10-02.mp3" data-title="Oct 2: The Indie iOS Playbook — App Store Fees, Subscription Economics, and Shipping Solo">▶ Play</button>
-            <a class="dl-btn" href="audio/oct-2-batch-4-the-indie-ios-playbook-app-store-fees-subscription-economics-and-shipping-solo-2026-10-02.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,Apps &amp; Dev" data-search="oct 2: the indie ios playbook — app store fees, subscription economics, and shipping solo marcus and devon break down apple&#x27;s new eu app store fee terms, revenuecat&#x27;s brutal 2026 subscription benchmarks, surviving app review, and indie dev stories — a builder&#x27;s episode for anyone shipping apps solo."
+             data-audio="audio/oct-2-batch-4-the-indie-ios-playbook-app-store-fees-subscription-economics-and-shipping-solo-2026-10-02.mp3" data-title="Oct 2: The Indie iOS Playbook — App Store Fees, Subscription Economics, and Shipping Solo">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">Oct 2: The Indie iOS Playbook — App Store Fees, Subscription Economics, and Shipping Solo</div>
+            <div class="row-meta">Oct 02, 2026 · 38 min</div>
+            <div class="row-desc">Marcus and Devon break down Apple&#x27;s new EU App Store fee terms, RevenueCat&#x27;s brutal 2026 subscription benchmarks, surviving App Review, and indie dev stories — a builder&#x27;s episode for anyone shipping apps solo.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,AI,Smartphones,Smart Home,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 02, 2026</span><span class="dot">·</span><span>26 min</span></div>
-          <h3>Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a</h3>
-          <p>Marcus and Devon break down Apple&#x27;s rumored October 13 HomePad event, Microsoft&#x27;s local-AI PC push, the Pixel 11a leak, and the week&#x27;s biggest AI safety news.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">AI</span> <span class="tag">Smartphones</span> <span class="tag">Smart Home</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/the-game-is-cursed-fortnitemares-homepad-and-the-local-ai-arms-race-2026-10-02.mp3" data-title="Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a">▶ Play</button>
-            <a class="dl-btn" href="audio/the-game-is-cursed-fortnitemares-homepad-and-the-local-ai-arms-race-2026-10-02.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,AI,Smartphones,Smart Home,Apps &amp; Dev" data-search="apple&#x27;s homepad event, the local ai arms race, and the pixel 11a marcus and devon break down apple&#x27;s rumored october 13 homepad event, microsoft&#x27;s local-ai pc push, the pixel 11a leak, and the week&#x27;s biggest ai safety news."
+             data-audio="audio/the-game-is-cursed-fortnitemares-homepad-and-the-local-ai-arms-race-2026-10-02.mp3" data-title="Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a</div>
+            <div class="row-meta">Oct 02, 2026 · 26 min</div>
+            <div class="row-desc">Marcus and Devon break down Apple&#x27;s rumored October 13 HomePad event, Microsoft&#x27;s local-AI PC push, the Pixel 11a leak, and the week&#x27;s biggest AI safety news.</div>
           </div>
-        </article>
-        <article class="ep-card" data-topics="Apple,AI,Smartphones,Apps &amp; Dev">
-          <div class="ep-meta"><span>Oct 02, 2026</span><span class="dot">·</span><span>16 min</span></div>
-          <h3>iPhone Duo: Apple&#x27;s First Foldable Is Finally Real</h3>
-          <p>Marcus and Devon break down Apple&#x27;s September event: the ,999 iPhone Duo foldable, the iPhone 18 Pro, the John Ternus era, plus AirPods 5 and new Apple Watches. Waveform-style tech talk.</p>
-          <div class="tags"><span class="tag">Apple</span> <span class="tag">AI</span> <span class="tag">Smartphones</span> <span class="tag">Apps &amp; Dev</span></div>
-          <div class="ep-actions">
-            <button class="play-btn" data-audio="audio/iphone-duo-apples-first-foldable-is-finally-real-2026-10-02.mp3" data-title="iPhone Duo: Apple&#x27;s First Foldable Is Finally Real">▶ Play</button>
-            <a class="dl-btn" href="audio/iphone-duo-apples-first-foldable-is-finally-real-2026-10-02.mp3" download>Download</a>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div>
+        <div class="row" data-topics="Apple,AI,Smartphones,Apps &amp; Dev" data-search="iphone duo: apple&#x27;s first foldable is finally real marcus and devon break down apple&#x27;s september event: the ,999 iphone duo foldable, the iphone 18 pro, the john ternus era, plus airpods 5 and new apple watches. waveform-style tech talk."
+             data-audio="audio/iphone-duo-apples-first-foldable-is-finally-real-2026-10-02.mp3" data-title="iPhone Duo: Apple&#x27;s First Foldable Is Finally Real">
+          <img class="thumb" src="covers/cover.webp" alt="" loading="lazy">
+          <div class="row-main">
+            <div class="row-title">iPhone Duo: Apple&#x27;s First Foldable Is Finally Real</div>
+            <div class="row-meta">Oct 02, 2026 · 16 min</div>
+            <div class="row-desc">Marcus and Devon break down Apple&#x27;s September event: the ,999 iPhone Duo foldable, the iPhone 18 Pro, the John Ternus era, plus AirPods 5 and new Apple Watches. Waveform-style tech talk.</div>
           </div>
-        </article></div>
-  <div id="topics">
-        <section class="topic-section" data-topic="AI">
-          <h2>AI</h2>
-          <ul><li><a href="#" data-play="audio/october-10-gta-vi-held-hostage-by-a-meme-coin-2026-10-11.mp3" data-title="October 10: GTA VI Held Hostage by a Meme Coin">October 10: GTA VI Held Hostage by a Meme Coin</a><span>Oct 11, 2026</span></li><li><a href="#" data-play="audio/october-9-hello-your-name-here-2026-10-10.mp3" data-title="October 9: Hello, Your Name Here">October 9: Hello, Your Name Here</a><span>Oct 10, 2026</span></li><li><a href="#" data-play="audio/october-8-two-octobers-one-chatbot-2026-10-09.mp3" data-title="October 8: Two Octobers, One Chatbot">October 8: Two Octobers, One Chatbot</a><span>Oct 09, 2026</span></li><li><a href="#" data-play="audio/october-7-apples-double-october-2026-10-08.mp3" data-title="October 7: Apple&#x27;s Double October">October 7: Apple&#x27;s Double October</a><span>Oct 08, 2026</span></li><li><a href="#" data-play="audio/october-6-one-week-to-apples-home-event-2026-10-07.mp3" data-title="October 6: One Week to Apple&#x27;s Home Event">October 6: One Week to Apple&#x27;s Home Event</a><span>Oct 07, 2026</span></li><li><a href="#" data-play="audio/october-5-the-ai-that-cheated-at-starcraft-2026-10-06.mp3" data-title="October 5: The AI That Cheated at StarCraft">October 5: The AI That Cheated at StarCraft</a><span>Oct 06, 2026</span></li><li><a href="#" data-play="audio/october-4-the-phone-that-forgot-how-to-phone-2026-10-05.mp3" data-title="October 4: The Phone That Forgot How to Phone">October 4: The Phone That Forgot How to Phone</a><span>Oct 05, 2026</span></li><li><a href="#" data-play="audio/oct-3-apple-vs-the-agents-atlas-clocks-in-2026-10-04.mp3" data-title="Oct 3: Apple vs the Agents, Atlas Clocks In">Oct 3: Apple vs the Agents, Atlas Clocks In</a><span>Oct 04, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-9-after-the-fold-tri-folds-rollables-and-the-ai-phone-2026-10-02.mp3" data-title="Oct 2: After the Fold — Tri-Folds, Rollables, and the AI Phone">Oct 2: After the Fold — Tri-Folds, Rollables, and the AI Phone</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-10-the-725-billion-dollar-question-2026-10-02.mp3" data-title="Oct 2: The 725 Billion Dollar Question">Oct 2: The 725 Billion Dollar Question</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-3-apples-smart-home-week-matter-grows-up-and-robot-vacuum-wars-2026-10-02.mp3" data-title="Oct 2: Apple&#x27;s Smart Home Week, Matter Grows Up, and Robot Vacuum Wars">Oct 2: Apple&#x27;s Smart Home Week, Matter Grows Up, and Robot Vacuum Wars</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-7-the-robotaxi-wars-the-ten-thousand-dollar-ev-and-the-battle-for-your-dashboard-2026-10-02.mp3" data-title="Oct 2: The Robotaxi Wars, the Ten Thousand Dollar EV, and the Battle for Your Dashboard">Oct 2: The Robotaxi Wars, the Ten Thousand Dollar EV, and the Battle for Your Dashboard</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-8-the-security-tune-up-breaches-ai-voice-scams-passkeys-2026-10-02.mp3" data-title="Oct 2: The Security Tune-Up — Breaches, AI Voice Scams &amp; Passkeys">Oct 2: The Security Tune-Up — Breaches, AI Voice Scams &amp; Passkeys</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-5-the-ai-model-wars-2026-10-02.mp3" data-title="Oct 2: The AI Model Wars">Oct 2: The AI Model Wars</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-1-metas-face-first-future-smart-glasses-ai-pins-and-the-watch-wars-2026-10-02.mp3" data-title="Oct 2: Meta&#x27;s Face-First Future — Smart Glasses, AI Pins, and the Watch Wars">Oct 2: Meta&#x27;s Face-First Future — Smart Glasses, AI Pins, and the Watch Wars</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/the-game-is-cursed-fortnitemares-homepad-and-the-local-ai-arms-race-2026-10-02.mp3" data-title="Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a">Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/iphone-duo-apples-first-foldable-is-finally-real-2026-10-02.mp3" data-title="iPhone Duo: Apple&#x27;s First Foldable Is Finally Real">iPhone Duo: Apple&#x27;s First Foldable Is Finally Real</a><span>Oct 02, 2026</span></li></ul>
-        </section>
-        <section class="topic-section" data-topic="Apple">
-          <h2>Apple</h2>
-          <ul><li><a href="#" data-play="audio/october-11-spacex-wants-to-be-your-phone-company-2026-10-12.mp3" data-title="October 11: SpaceX Wants to Be Your Phone Company">October 11: SpaceX Wants to Be Your Phone Company</a><span>Oct 12, 2026</span></li><li><a href="#" data-play="audio/october-10-gta-vi-held-hostage-by-a-meme-coin-2026-10-11.mp3" data-title="October 10: GTA VI Held Hostage by a Meme Coin">October 10: GTA VI Held Hostage by a Meme Coin</a><span>Oct 11, 2026</span></li><li><a href="#" data-play="audio/october-9-hello-your-name-here-2026-10-10.mp3" data-title="October 9: Hello, Your Name Here">October 9: Hello, Your Name Here</a><span>Oct 10, 2026</span></li><li><a href="#" data-play="audio/october-8-two-octobers-one-chatbot-2026-10-09.mp3" data-title="October 8: Two Octobers, One Chatbot">October 8: Two Octobers, One Chatbot</a><span>Oct 09, 2026</span></li><li><a href="#" data-play="audio/october-7-apples-double-october-2026-10-08.mp3" data-title="October 7: Apple&#x27;s Double October">October 7: Apple&#x27;s Double October</a><span>Oct 08, 2026</span></li><li><a href="#" data-play="audio/october-6-one-week-to-apples-home-event-2026-10-07.mp3" data-title="October 6: One Week to Apple&#x27;s Home Event">October 6: One Week to Apple&#x27;s Home Event</a><span>Oct 07, 2026</span></li><li><a href="#" data-play="audio/october-4-the-phone-that-forgot-how-to-phone-2026-10-05.mp3" data-title="October 4: The Phone That Forgot How to Phone">October 4: The Phone That Forgot How to Phone</a><span>Oct 05, 2026</span></li><li><a href="#" data-play="audio/oct-3-apple-vs-the-agents-atlas-clocks-in-2026-10-04.mp3" data-title="Oct 3: Apple vs the Agents, Atlas Clocks In">Oct 3: Apple vs the Agents, Atlas Clocks In</a><span>Oct 04, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-9-after-the-fold-tri-folds-rollables-and-the-ai-phone-2026-10-02.mp3" data-title="Oct 2: After the Fold — Tri-Folds, Rollables, and the AI Phone">Oct 2: After the Fold — Tri-Folds, Rollables, and the AI Phone</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-3-apples-smart-home-week-matter-grows-up-and-robot-vacuum-wars-2026-10-02.mp3" data-title="Oct 2: Apple&#x27;s Smart Home Week, Matter Grows Up, and Robot Vacuum Wars">Oct 2: Apple&#x27;s Smart Home Week, Matter Grows Up, and Robot Vacuum Wars</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-1-metas-face-first-future-smart-glasses-ai-pins-and-the-watch-wars-2026-10-02.mp3" data-title="Oct 2: Meta&#x27;s Face-First Future — Smart Glasses, AI Pins, and the Watch Wars">Oct 2: Meta&#x27;s Face-First Future — Smart Glasses, AI Pins, and the Watch Wars</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-4-the-indie-ios-playbook-app-store-fees-subscription-economics-and-shipping-solo-2026-10-02.mp3" data-title="Oct 2: The Indie iOS Playbook — App Store Fees, Subscription Economics, and Shipping Solo">Oct 2: The Indie iOS Playbook — App Store Fees, Subscription Economics, and Shipping Solo</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/the-game-is-cursed-fortnitemares-homepad-and-the-local-ai-arms-race-2026-10-02.mp3" data-title="Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a">Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/iphone-duo-apples-first-foldable-is-finally-real-2026-10-02.mp3" data-title="iPhone Duo: Apple&#x27;s First Foldable Is Finally Real">iPhone Duo: Apple&#x27;s First Foldable Is Finally Real</a><span>Oct 02, 2026</span></li></ul>
-        </section>
-        <section class="topic-section" data-topic="Apps &amp; Dev">
-          <h2>Apps &amp; Dev</h2>
-          <ul><li><a href="#" data-play="audio/october-11-spacex-wants-to-be-your-phone-company-2026-10-12.mp3" data-title="October 11: SpaceX Wants to Be Your Phone Company">October 11: SpaceX Wants to Be Your Phone Company</a><span>Oct 12, 2026</span></li><li><a href="#" data-play="audio/october-10-gta-vi-held-hostage-by-a-meme-coin-2026-10-11.mp3" data-title="October 10: GTA VI Held Hostage by a Meme Coin">October 10: GTA VI Held Hostage by a Meme Coin</a><span>Oct 11, 2026</span></li><li><a href="#" data-play="audio/october-9-hello-your-name-here-2026-10-10.mp3" data-title="October 9: Hello, Your Name Here">October 9: Hello, Your Name Here</a><span>Oct 10, 2026</span></li><li><a href="#" data-play="audio/october-8-two-octobers-one-chatbot-2026-10-09.mp3" data-title="October 8: Two Octobers, One Chatbot">October 8: Two Octobers, One Chatbot</a><span>Oct 09, 2026</span></li><li><a href="#" data-play="audio/october-7-apples-double-october-2026-10-08.mp3" data-title="October 7: Apple&#x27;s Double October">October 7: Apple&#x27;s Double October</a><span>Oct 08, 2026</span></li><li><a href="#" data-play="audio/october-6-one-week-to-apples-home-event-2026-10-07.mp3" data-title="October 6: One Week to Apple&#x27;s Home Event">October 6: One Week to Apple&#x27;s Home Event</a><span>Oct 07, 2026</span></li><li><a href="#" data-play="audio/oct-3-apple-vs-the-agents-atlas-clocks-in-2026-10-04.mp3" data-title="Oct 3: Apple vs the Agents, Atlas Clocks In">Oct 3: Apple vs the Agents, Atlas Clocks In</a><span>Oct 04, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-9-after-the-fold-tri-folds-rollables-and-the-ai-phone-2026-10-02.mp3" data-title="Oct 2: After the Fold — Tri-Folds, Rollables, and the AI Phone">Oct 2: After the Fold — Tri-Folds, Rollables, and the AI Phone</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-3-apples-smart-home-week-matter-grows-up-and-robot-vacuum-wars-2026-10-02.mp3" data-title="Oct 2: Apple&#x27;s Smart Home Week, Matter Grows Up, and Robot Vacuum Wars">Oct 2: Apple&#x27;s Smart Home Week, Matter Grows Up, and Robot Vacuum Wars</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-1-metas-face-first-future-smart-glasses-ai-pins-and-the-watch-wars-2026-10-02.mp3" data-title="Oct 2: Meta&#x27;s Face-First Future — Smart Glasses, AI Pins, and the Watch Wars">Oct 2: Meta&#x27;s Face-First Future — Smart Glasses, AI Pins, and the Watch Wars</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-4-the-indie-ios-playbook-app-store-fees-subscription-economics-and-shipping-solo-2026-10-02.mp3" data-title="Oct 2: The Indie iOS Playbook — App Store Fees, Subscription Economics, and Shipping Solo">Oct 2: The Indie iOS Playbook — App Store Fees, Subscription Economics, and Shipping Solo</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/the-game-is-cursed-fortnitemares-homepad-and-the-local-ai-arms-race-2026-10-02.mp3" data-title="Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a">Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/iphone-duo-apples-first-foldable-is-finally-real-2026-10-02.mp3" data-title="iPhone Duo: Apple&#x27;s First Foldable Is Finally Real">iPhone Duo: Apple&#x27;s First Foldable Is Finally Real</a><span>Oct 02, 2026</span></li></ul>
-        </section>
-        <section class="topic-section" data-topic="Gaming">
-          <h2>Gaming</h2>
-          <ul><li><a href="#" data-play="audio/october-11-spacex-wants-to-be-your-phone-company-2026-10-12.mp3" data-title="October 11: SpaceX Wants to Be Your Phone Company">October 11: SpaceX Wants to Be Your Phone Company</a><span>Oct 12, 2026</span></li><li><a href="#" data-play="audio/october-9-hello-your-name-here-2026-10-10.mp3" data-title="October 9: Hello, Your Name Here">October 9: Hello, Your Name Here</a><span>Oct 10, 2026</span></li><li><a href="#" data-play="audio/october-6-one-week-to-apples-home-event-2026-10-07.mp3" data-title="October 6: One Week to Apple&#x27;s Home Event">October 6: One Week to Apple&#x27;s Home Event</a><span>Oct 07, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-8-the-security-tune-up-breaches-ai-voice-scams-passkeys-2026-10-02.mp3" data-title="Oct 2: The Security Tune-Up — Breaches, AI Voice Scams &amp; Passkeys">Oct 2: The Security Tune-Up — Breaches, AI Voice Scams &amp; Passkeys</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-2-gta-vi-countdown-the-oled-handheld-wars-and-fortnitemares-2026-10-02.mp3" data-title="Oct 2: GTA VI Countdown, the OLED Handheld Wars, and Fortnitemares">Oct 2: GTA VI Countdown, the OLED Handheld Wars, and Fortnitemares</a><span>Oct 02, 2026</span></li></ul>
-        </section>
-        <section class="topic-section" data-topic="Smart Home">
-          <h2>Smart Home</h2>
-          <ul><li><a href="#" data-play="audio/oct-2-batch-3-apples-smart-home-week-matter-grows-up-and-robot-vacuum-wars-2026-10-02.mp3" data-title="Oct 2: Apple&#x27;s Smart Home Week, Matter Grows Up, and Robot Vacuum Wars">Oct 2: Apple&#x27;s Smart Home Week, Matter Grows Up, and Robot Vacuum Wars</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/the-game-is-cursed-fortnitemares-homepad-and-the-local-ai-arms-race-2026-10-02.mp3" data-title="Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a">Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a</a><span>Oct 02, 2026</span></li></ul>
-        </section>
-        <section class="topic-section" data-topic="Smartphones">
-          <h2>Smartphones</h2>
-          <ul><li><a href="#" data-play="audio/october-11-spacex-wants-to-be-your-phone-company-2026-10-12.mp3" data-title="October 11: SpaceX Wants to Be Your Phone Company">October 11: SpaceX Wants to Be Your Phone Company</a><span>Oct 12, 2026</span></li><li><a href="#" data-play="audio/october-9-hello-your-name-here-2026-10-10.mp3" data-title="October 9: Hello, Your Name Here">October 9: Hello, Your Name Here</a><span>Oct 10, 2026</span></li><li><a href="#" data-play="audio/october-4-the-phone-that-forgot-how-to-phone-2026-10-05.mp3" data-title="October 4: The Phone That Forgot How to Phone">October 4: The Phone That Forgot How to Phone</a><span>Oct 05, 2026</span></li><li><a href="#" data-play="audio/oct-3-apple-vs-the-agents-atlas-clocks-in-2026-10-04.mp3" data-title="Oct 3: Apple vs the Agents, Atlas Clocks In">Oct 3: Apple vs the Agents, Atlas Clocks In</a><span>Oct 04, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-9-after-the-fold-tri-folds-rollables-and-the-ai-phone-2026-10-02.mp3" data-title="Oct 2: After the Fold — Tri-Folds, Rollables, and the AI Phone">Oct 2: After the Fold — Tri-Folds, Rollables, and the AI Phone</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/oct-2-batch-6-starship-finally-reaches-orbit-2026-10-02.mp3" data-title="Oct 2: Starship Finally Reaches Orbit">Oct 2: Starship Finally Reaches Orbit</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/the-game-is-cursed-fortnitemares-homepad-and-the-local-ai-arms-race-2026-10-02.mp3" data-title="Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a">Apple&#x27;s HomePad Event, the Local AI Arms Race, and the Pixel 11a</a><span>Oct 02, 2026</span></li><li><a href="#" data-play="audio/iphone-duo-apples-first-foldable-is-finally-real-2026-10-02.mp3" data-title="iPhone Duo: Apple&#x27;s First Foldable Is Finally Real">iPhone Duo: Apple&#x27;s First Foldable Is Finally Real</a><span>Oct 02, 2026</span></li></ul>
-        </section></div>
-</main>
-<footer>Signal Podcasts · new episode every evening</footer>
+          <button class="row-play" aria-label="Play episode">▶</button>
+        </div></div>
+  <div class="empty hidden" id="no-results">No episodes match your search.</div>
+</div>
+<footer>The Signal · new episode every evening · hosted by Marcus &amp; Devon</footer>
+
+<div id="miniplayer">
+  <div class="mp-progress" id="mp-progress"><div class="fill" id="mp-fill"></div></div>
+  <div class="mp-body">
+    <img src="covers/cover.webp" alt="">
+    <div class="mp-info">
+      <div class="mp-title" id="mp-title"></div>
+      <div class="mp-time" id="mp-time">0:00 / 0:00</div>
+    </div>
+    <button class="mp-btn" id="mp-back" aria-label="Back 15 seconds">−15</button>
+    <button class="mp-btn main" id="mp-toggle" aria-label="Play or pause">▶</button>
+    <button class="mp-btn" id="mp-fwd" aria-label="Forward 15 seconds">+15</button>
+  </div>
+</div>
+
 <script>
-const player = document.getElementById('player');
-const nowTitle = document.getElementById('now-title');
-function playEpisode(src, title) {
-  player.src = src;
-  nowTitle.textContent = title;
-  player.play();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+const audio = new Audio();
+audio.preload = 'metadata';
+const mp = document.getElementById('miniplayer');
+const mpTitle = document.getElementById('mp-title');
+const mpTime = document.getElementById('mp-time');
+const mpToggle = document.getElementById('mp-toggle');
+const mpFill = document.getElementById('mp-fill');
+const mpProg = document.getElementById('mp-progress');
+let currentRow = null;
+
+function fmt(t){ if(!isFinite(t)) return '0:00'; const m=Math.floor(t/60), s=Math.floor(t%60); return m+':'+String(s).padStart(2,'0'); }
+
+function setRowPlaying(row, playing){
+  document.querySelectorAll('.row.playing').forEach(function(r){ r.classList.remove('playing'); var b=r.querySelector('.row-play'); if(b) b.textContent='\u25B6'; });
+  if(row){ row.classList.add('playing'); var b=row.querySelector('.row-play'); if(b) b.textContent = playing ? '\u275A\u275A' : '\u25B6'; }
 }
-document.querySelectorAll('.play-btn').forEach(b =>
-  b.addEventListener('click', () => playEpisode(b.dataset.audio, b.dataset.title)));
-document.querySelectorAll('[data-play]').forEach(a =>
-  a.addEventListener('click', e => { e.preventDefault(); playEpisode(a.dataset.play, a.dataset.title); }));
-document.querySelectorAll('#chips .chip').forEach(chip =>
-  chip.addEventListener('click', () => {
-    document.querySelectorAll('#chips .chip').forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    const t = chip.dataset.topic;
-    document.querySelectorAll('.ep-card').forEach(card => {
-      card.classList.toggle('hidden', t !== 'all' && !card.dataset.topics.split(',').includes(t));
-    });
-    document.querySelectorAll('.topic-section').forEach(sec => {
-      sec.classList.toggle('hidden', t !== 'all' && sec.dataset.topic !== t);
-    });
-  }));
+
+function startEpisode(row, src, title){
+  mp.classList.add('show');
+  mpTitle.textContent = title;
+  if(currentRow !== row){ audio.src = src; audio.play().catch(function(){}); }
+  else if(audio.paused){ audio.play().catch(function(){}); }
+  currentRow = row;
+  setRowPlaying(row, true);
+  mpToggle.textContent = '\u275A\u275A';
+}
+
+function toggleCurrent(){
+  if(!audio.src) return;
+  if(audio.paused){ audio.play().catch(function(){}); } else { audio.pause(); }
+}
+
+audio.addEventListener('play', function(){ mpToggle.textContent='\u275A\u275A'; if(currentRow) setRowPlaying(currentRow, true); });
+audio.addEventListener('pause', function(){ mpToggle.textContent='\u25B6'; if(currentRow) setRowPlaying(currentRow, false); });
+audio.addEventListener('timeupdate', function(){
+  if(audio.duration) mpFill.style.width = (audio.currentTime/audio.duration*100)+'%';
+  mpTime.textContent = fmt(audio.currentTime)+' / '+fmt(audio.duration);
+});
+audio.addEventListener('loadedmetadata', function(){ mpTime.textContent = fmt(audio.currentTime)+' / '+fmt(audio.duration); });
+audio.addEventListener('ended', function(){ mpToggle.textContent='\u25B6'; });
+
+mpToggle.addEventListener('click', function(e){ e.stopPropagation(); toggleCurrent(); });
+document.getElementById('mp-back').addEventListener('click', function(e){ e.stopPropagation(); audio.currentTime=Math.max(0,audio.currentTime-15); });
+document.getElementById('mp-fwd').addEventListener('click', function(e){ e.stopPropagation(); audio.currentTime=Math.min(audio.duration||0,audio.currentTime+15); });
+mpProg.addEventListener('click', function(e){
+  var r = mpProg.getBoundingClientRect();
+  var frac = Math.min(1, Math.max(0, (e.clientX-r.left)/r.width));
+  if(audio.duration) audio.currentTime = frac*audio.duration;
+});
+
+document.querySelectorAll('.row').forEach(function(row){
+  row.addEventListener('click', function(){
+    if(currentRow===row && !audio.paused){ audio.pause(); }
+    else { startEpisode(row, row.dataset.audio, row.dataset.title); }
+  });
+});
+
+var heroBtn = document.getElementById('hero-play');
+if(heroBtn){
+  heroBtn.addEventListener('click', function(){
+    var firstRow = document.querySelector('.row');
+    if(currentRow===firstRow && !audio.paused){ audio.pause(); }
+    else { startEpisode(firstRow, heroBtn.dataset.audio, heroBtn.dataset.title); }
+  });
+}
+
+var q = document.getElementById('q');
+var chips = document.querySelectorAll('.chip');
+var activeTopic = 'all';
+function applyFilters(){
+  var term = q.value.trim().toLowerCase();
+  var visible = 0;
+  document.querySelectorAll('.row').forEach(function(row){
+    var okTopic = activeTopic==='all' || row.dataset.topics.split(',').indexOf(activeTopic) !== -1;
+    var okSearch = !term || row.dataset.search.indexOf(term) !== -1;
+    var show = okTopic && okSearch;
+    row.classList.toggle('hidden', !show);
+    if(show) visible++;
+  });
+  document.getElementById('no-results').classList.toggle('hidden', visible>0);
+}
+q.addEventListener('input', applyFilters);
+chips.forEach(function(ch){
+  ch.addEventListener('click', function(){
+    chips.forEach(function(c){ c.classList.remove('active'); });
+    ch.classList.add('active');
+    activeTopic = ch.dataset.topic;
+    applyFilters();
+  });
+});
 </script>
 </body>
 </html>
